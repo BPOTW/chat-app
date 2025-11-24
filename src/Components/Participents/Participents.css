@@ -1,0 +1,75 @@
+.participents-div{
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* height: 60vh; */
+}
+
+.participents-title{
+  font-size: 1.0rem;
+  color: rgba(255,255,255,0.95);
+  font-weight: 400;
+  margin-left: 15px;
+  text-align: start;
+}
+
+.participent-div{
+  justify-content: start;
+  align-items: center;
+  width: 88%;
+  border-radius: 6px;
+  height: 25px;
+  background-color: #1DC487;
+  font-size: 12px;
+  font-weight: 500;
+  color: #ececec;
+}
+
+.participent-div p{
+  margin: 0px 0px 2px 6px;
+}
+
+.collapse-participants{
+  animation: collapseParticipants 0.3s ease forwards;
+  overflow: hidden;
+}
+
+@keyframes collapseParticipants {
+  from {
+    max-height: auto;
+  }
+  to {
+    max-height: 0px;
+  }
+}
+
+.show-participants{
+  animation: showParticipants 0.3s ease-in-out forwards;
+  overflow: hidden;
+}
+
+@keyframes showParticipants {
+  from {
+    max-height: 0px;
+  }
+  to {
+    max-height: auto;
+  }
+}
+
+
+/* .participents-div::-webkit-scrollbar {
+  width: 4px; 
+  margin-right: 20px;           
+}
+
+.participents-div::-webkit-scrollbar-track {
+  background: transparent;       
+  border-radius: 4px; 
+  margin-right: 20px; 
+}
+
+.participents-div::-webkit-scrollbar-thumb {
+  background: rgb(77, 77, 77);         
+  border-radius: 4px;
+} */

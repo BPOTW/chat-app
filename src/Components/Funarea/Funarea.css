@@ -1,0 +1,52 @@
+.collapse-funarea{
+  animation: collapseFunArea 0.3s ease forwards;
+  overflow: hidden;
+}
+
+@keyframes collapseFunArea {
+  from {
+    max-height: 170px;
+  }
+  to {
+    max-height: 0px;
+  }
+}
+
+.show-funarea{
+  animation: showFunArea 0.3s ease-in-out forwards;
+  overflow: hidden;
+}
+
+@keyframes showFunArea {
+  from {
+    max-height: 0px;
+  }
+  to {
+    max-height: 170px;
+  }
+}
+
+.funArea-div{
+  width: 100%;
+}
+
+/* .funArea-title{
+  margin: 0px 0 0 15px;
+  padding: 0px;
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+  text-align: start;
+} */
+
+.funArea-btn{
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  font-size: 12px;
+  font-weight: 500px;
+  height: 30px;
+  background-color: #1DC4BF;
+  color: #ececec;
+  cursor: pointer;
+}

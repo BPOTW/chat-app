@@ -1,0 +1,30 @@
+.userName-title{
+  margin: 0 0 0 15px;
+  font-size: 1.1rem;
+}
+
+.userName-div{
+  width: 90%;
+  font-size: 1rem;
+  justify-content: center;
+  align-items: center;
+  min-height: 30px;
+  height: 30px;
+  color: white;
+  background-color: #353535;
+}
+
+.title-icon-div{
+  margin-top: 8px;
+  width: 96%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-icon-div p{
+  padding-top: 0px;
+  margin-top: 0px;
+}
+.title-icon-div img{
+  cursor: pointer;
+}

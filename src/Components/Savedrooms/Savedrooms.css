@@ -1,0 +1,59 @@
+.collapse-savedrooms {
+  animation: collapseSavedRooms 0.3s ease forwards;
+  overflow: hidden;
+}
+
+@keyframes collapseSavedRooms {
+  from {
+    max-height: auto;
+  }
+  to {
+    max-height: 0px;
+  }
+}
+
+.show-savedrooms {
+  animation: showSavedRooms 0.3s ease-in-out forwards;
+  overflow: hidden;
+}
+
+@keyframes showSavedRooms {
+  from {
+    max-height: 0px;
+  }
+  to {
+    max-height: auto;
+  }
+}
+
+.savedRooms-div {
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* .savedRooms-title{
+  margin: 0px 0 0 15px;
+  padding: 0px;
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+  text-align: start;
+} */
+
+.savedRoom-div {
+  justify-content: space-between;
+  padding-left: 10px;
+  align-items: center;
+  width: 87%;
+  font-size: 14px;
+  font-weight: 500;
+  height: 30px;
+  background-color: #242424;
+  color: #ececec;
+  cursor: pointer;
+}
+
+.savedRoom-div img{
+  margin-right: 10px;
+}

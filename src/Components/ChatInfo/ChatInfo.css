@@ -1,0 +1,22 @@
+.room-title{
+  margin: 8px 0 0 15px;
+  font-size: 1.1rem;
+}
+
+.room-div{
+  width: 90%;
+  font-size: 1rem;
+  justify-content: center;
+  align-items: center;
+  min-height: 30px;
+  height: 30px;
+  color: white;
+  background-color: #353535;
+}
+
+.room-icon-div{
+  margin-top: 8px;
+  width: 96%;
+  display: flex;
+  justify-content: space-between;
+}
