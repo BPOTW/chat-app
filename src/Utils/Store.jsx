@@ -48,40 +48,42 @@ export const ServerConnected_G = create((set) => ({
   }
 }));
 
-export const Messages_G = create((set) => ({
-  messages: {},
-  //message format
-  //   {
-  //   id: Date.now(),
-  //   text: "Hello everyone!",
-  //   senderId: "user123",
-  //   timestamp: Date.now(),
-  // };
+export const Messages_G = create(
+  persist(
+    (set) => ({
+      messages: {},
+      //message format
+      //   {
+      //   id: '',
+      //   text: "Hello everyone!",
+      //   senderId: "user123",
+      //   timestamp: '',
+      // };
 
-  addMessage: (roomId, message) =>
-    set((state) => ({
-      messages: {
-        ...state.messages,
-        [roomId]: [...(state.messages[roomId] || []), message],
-      },
-    })),
+      addMessage: (roomId, message) =>
+        set((state) => ({
+          messages: {
+            ...state.messages,
+            [roomId]: [...(state.messages[roomId] || []), message],
+          },
+        })),
 
-  setMessages: (roomId, newMessages) =>
-    set((state) => ({
-      messages: {
-        ...state.messages,
-        [roomId]: newMessages,
-      },
-    })),
+      setMessages: (roomId, newMessages) =>
+        set((state) => ({
+          messages: {
+            ...state.messages,
+            [roomId]: newMessages,
+          },
+        }),true),
 
-  clearMessages: (roomId) =>
-    set((state) => ({
-      messages: {
-        ...state.messages,
-        [roomId]: [],
-      },
-    })),
-}));
+      clearMessages: (roomId) =>
+        set((state) => ({
+          messages: {
+            ...state.messages,
+            [roomId]: [],
+          },
+        })),
+    })));
 
 export const IsLogedIn_G = create((set) => ({
   islogedin: false,
@@ -123,11 +125,11 @@ export const Chats_G = create((set) => ({
     })),
 }));
 
-export const ProfileBtns_G = create((set) => ({
+export const ProfileBtns_G = create(persist((set) => ({
   Private: false,
   Invite: false,
   SaveChat: false,
-  togglePrivate: () => {
+  togglePrivate: () => { 
     set((state) => ({ ...state, Private: !state.Private }))
   },
   toggleInvite: () => {
@@ -136,7 +138,7 @@ export const ProfileBtns_G = create((set) => ({
   toggleSave: () => {
     set((state) => ({ ...state, SaveChat: !state.SaveChat }))
   }
-})
+}))
 );
 
 export const ActionBtns_G = create((set) => ({
@@ -164,7 +166,7 @@ export const Rooms_G = create(
         set((state) => ({
           rooms: {
             ...state.rooms,
-            [roomId]: [roomData],
+            [roomId]: roomData,
           },
         })),
 
@@ -184,9 +186,17 @@ export const Rooms_G = create(
         })),
     }),
 
-    {
-      name: "rooms-store",
-    }
+    // {
+    //   name: "rooms-store",
+    // }
   )
 );
 
+export const DiscoverRoomsList_G = create((set) => ({
+  listOfRooms: [],  // now an array
+
+  updateDiscoverRoomsList: (value) =>
+    set(() => ({
+      listOfRooms: value,  // value should now be an array
+    })),
+}));

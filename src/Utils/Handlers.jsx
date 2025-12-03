@@ -34,20 +34,17 @@ const SaveSessionid_handler = async (sessionid) => {
     const res = await axios.post("http://localhost:5050/id", {
       sessionid:sessionid
     });
-
-    console.log(res.data); // the server response
   } catch (err) {
     console.error(err.response ? err.response.data : err.message);
   }
 };
-
 
 const checkIfLogedin = (navigate)=>{
   try{
     const login_data = localStorage.getItem("login_data");
     return login_data ? JSON.parse(login_data) : null;
   }catch(error){
-    console.log(error);
+    console.error(error);
     return null;
   }
 }

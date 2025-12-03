@@ -20,7 +20,6 @@ export default function Login() {
 
     async function handleLogin() {
         if (username != '' && key != '') {
-            console.log('login')
             const res = await Login_handler(username, key);
             if (res.login) {
                 setUserName(res.userData.username);

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import "./CreateRoom.css"
 import { useNavigate } from "react-router";
-import { ActionBtns_G, UserName_G } from "../../Utils/Store";
+import { ActionBtns_G, JoinedRoomId_G, Messages_G, Rooms_G, UserName_G } from "../../Utils/Store";
 import { CreateRoom_S } from "../../Utils/SocketServices";
 
 export default function CreateRoom() {
@@ -13,6 +13,9 @@ export default function CreateRoom() {
     const [allowadd, setallowadd] = useState(false);
     const userName = UserName_G((state) => state.userName);
     const toggleCreateRoom = ActionBtns_G((state) => state.toggleCreateRoom);
+    const rooms = Rooms_G((state) => state.rooms);
+    const joinedRoomId = JoinedRoomId_G((state) => state.joinedRoomId);
+    const { messages, addMessage, setMessages, clearMessages } = Messages_G((state) => state);
 
     function handleRoomName(e) {
         setroomname(e.target.value);
@@ -32,7 +35,12 @@ export default function CreateRoom() {
 
     async function handleCreateRoom() {
         if (roomname != '') {
-            console.log('createroom');
+            if (joinedRoomId != '') {
+                const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
+                if (!allowSaveChat) {
+                    clearMessages(joinedRoomId);
+                }
+            }
             CreateRoom_S(roomname, {
                 adminId: userName,
                 isPrivate: private_,
@@ -45,7 +53,6 @@ export default function CreateRoom() {
     }
 
     async function handleCloseModal() {
-        console.log('close room')
         toggleCreateRoom(false);
     }
 

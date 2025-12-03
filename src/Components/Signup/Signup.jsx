@@ -24,7 +24,6 @@ export default function SignUp() {
 
     async function handleSignup() {
         if (username != '' && key != '' && rekey != '') {
-            console.log('signup')
             const res = await SignUp_handler(username,key);
             if(res.login){
                 navigate('/login')

@@ -88,6 +88,12 @@
   overflow-y: scroll;
 }
 
+.scroll-area-chat-info{
+  width: 100%;
+  height: 73%;
+  overflow-y: scroll;
+}
+
 .scroll-area::-webkit-scrollbar {
   width: 4px; 
   margin-right: 20px;           
@@ -100,6 +106,22 @@
 }
 
 .scroll-area::-webkit-scrollbar-thumb {
+  background: rgb(77, 77, 77);         
+  border-radius: 4px;
+}
+
+.scroll-area-chat-info::-webkit-scrollbar {
+  width: 4px; 
+  margin-right: 20px;           
+}
+
+.scroll-area-chat-info::-webkit-scrollbar-track {
+  background: transparent;       
+  border-radius: 4px; 
+  margin-right: 20px; 
+}
+
+.scroll-area-chat-info::-webkit-scrollbar-thumb {
   background: rgb(77, 77, 77);         
   border-radius: 4px;
 }
@@ -121,6 +143,7 @@
   display: flex;
   height: 88%;
   width: 100%;
+  /* background-color: aqua; */
 }
 
 .chatInfo-div{
@@ -128,6 +151,7 @@
   width: 22%;
   border-top-left-radius: 15px;
   border-right: 1px solid rgb(29, 29, 29);
+  /* background-color: #5b21b6; */
   /* overflow-y: auto; */
 }
 
@@ -169,7 +193,7 @@
   flex: 1 1 auto;
   overflow-y: auto;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: 8px;
   padding: 8px;
   height: 96%;
@@ -337,4 +361,29 @@
     transform: translateX(0) scale(1);
     opacity: 1;
   }
+}
+
+.btns-div{
+  width: 100%;
+}
+
+.clear_room_btn{
+  width: 100%;
+  height: 30px;
+  background-color: rgb(0, 255, 200);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.leave_room_btn{
+  width: 100%;
+  height: 30px;
+  background-color: red;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }

@@ -32,5 +32,3 @@ function App() {
 }
 
 export default App
-
-//add a feature of anonymity. no one will know who send the message in the chat room

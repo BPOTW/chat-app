@@ -22,12 +22,10 @@ export default function Search() {
 
     function handleInputSearch(e) {
         setsearchInput(e.target.value)
-        console.log(e.target.value);
     }
 
     function handleIdSearch(e) {
         if (e.key === 'Enter' && !e.shiftKey) {
-            console.log('enter pressed')
             e.preventDefault();
             searchForId(searchInput);
         }

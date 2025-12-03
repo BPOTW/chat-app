@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { registerUser, socket } from './SocketServices';
-import { ServerConnected_G, SearchId_result_G, Received_Request_Data_G, UserName_G, Messages_G, JoinedRoomId_G, Participants_G, Rooms_G } from './Store';
+import { ServerConnected_G, SearchId_result_G, Received_Request_Data_G, UserName_G, Messages_G, JoinedRoomId_G, Participants_G, Rooms_G, DiscoverRoomsList_G, ProfileBtns_G } from './Store';
 
 export function SocketManager() {
     const setIsConnected = ServerConnected_G((state) => state.setIsConnected);
@@ -11,8 +11,9 @@ export function SocketManager() {
     const { messages, addMessage, setMessages, clearMessages } = Messages_G((state) => state);
     const { joinedRoomId, setjoinedRoomId } = JoinedRoomId_G((state) => state);
     const addParticipant = Participants_G((state) => state.addParticipant);
-    const participants = Participants_G((state) => state.participants);
+    const updateDiscoverRoomsList = DiscoverRoomsList_G((state) => state.updateDiscoverRoomsList);
     const addRoom = Rooms_G((state) => state.addRoom);
+    const {Private, Invite, SaveChat, togglePrivate, toggleInvite, toggleSave} = ProfileBtns_G();
 
     useEffect(() => {
         socket.connect();
@@ -20,11 +21,10 @@ export function SocketManager() {
         socket.on('connect', () => {
             console.log('Connected to server.');
             setIsConnected(true);
-            registerUser(userName);
+            registerUser(userName,{private:Private,invite:Invite,savechat:SaveChat});
         });
 
         socket.on("disconnect", () => {
-            // console.log("Disconnected");
             setIsConnected(false);
         });
 
@@ -34,7 +34,6 @@ export function SocketManager() {
         });
 
         socket.on('message', (messageData) => {
-            // console.log('received message data is', messageData)
             addMessage(messageData.roomId, {
                 id: messageData.id,
                 text: messageData.msg,
@@ -44,18 +43,19 @@ export function SocketManager() {
         });
 
         socket.on('request', (senderId, roomId) => {
-            setRequestId(senderId, roomId);
+            const invite_ = ProfileBtns_G.getState().Invite;
+            if(!invite_){
+                setRequestId(senderId, roomId);
+            }
         });
 
         socket.on('roomJoined', (data) => {
-            // console.log(data);
             setjoinedRoomId(data['roomId']);
             addRoom(data['roomId'], data);
         });
 
         socket.on('participants', (participantsList) => {
             const currentRoomId = JoinedRoomId_G.getState().joinedRoomId;
-            console.log("Participants:", participantsList, "Room:", currentRoomId);
             addParticipant(currentRoomId, participantsList);
         });
 
@@ -63,7 +63,14 @@ export function SocketManager() {
             setjoinedRoomId(data['roomId']);
             addParticipant(data['roomId'], data['participants']);
             addRoom(data['roomId'], data);
-            console.log(data['participants']);
+        });
+
+        socket.on('ListOfRooms', (rooms) => {
+            updateDiscoverRoomsList(rooms);
+        });
+        
+        socket.on('joinRoomFailed', (msg) => {
+            console.warn("Room join msg:", msg);
         });
 
         return () => {

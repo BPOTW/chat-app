@@ -14,10 +14,15 @@ export function searchForId(id) {
   }
 }
 
-export function registerUser(username){
+export function registerUser(username,data){
   if(username && socket.connected){
-    socket.emit("setUsername", username);
-    // socket.emit("join",username);
+    socket.emit("setUsername", username,data);
+  }
+}
+
+export function updateUser(username,data){
+  if(username && socket.connected){
+    socket.emit("updateUser", username,data);
   }
 }
 
@@ -29,7 +34,6 @@ export function sendMessage_S(data){
 
 export function AcceptRequest_S(roomId, userId){
   if(socket.connected){
-    console.log('accept request data', roomId, userId);
     socket.emit("joinRoom", roomId, userId);
   }
 }
@@ -40,6 +44,12 @@ export function JoinRoom_S(roomId, userId){
   }
 }
 
+export function JoinRandomRoom_S(userId){
+  if(socket.connected){
+    socket.emit("joinRandomRoom", userId);
+  }
+}
+
 export const handleSendRequest = (sender, receiver, roomId) => {
   if (socket.connected) {
     socket.emit("sendRequest", {
@@ -47,7 +57,6 @@ export const handleSendRequest = (sender, receiver, roomId) => {
       receiverId: receiver,
       roomId:roomId
     });
-    // socket.emit("joinRoom", roomId, receiver);
   } else {
     console.warn("Socket not connected, cannot send request.");
   }
@@ -56,5 +65,23 @@ export const handleSendRequest = (sender, receiver, roomId) => {
 export function CreateRoom_S(roomName, roomData){
   if(socket.connected){
     socket.emit("createRoom", roomName, roomData);
+  }
+}
+
+export function leaveRoom_S(roomName){
+  if(socket.connected){
+    socket.emit("leaveRoom", roomName);
+  }
+}
+
+export function triggerGetRooms_S(){
+  if(socket.connected){
+    socket.emit("giveListOfRooms");
+  }
+}
+
+export function updateRoomData_S(roomId, roomData){
+  if(socket.connected){
+    socket.emit("updateRoomData", roomId, roomData);
   }
 }

@@ -4,14 +4,15 @@ import UserName from './Components/Username/Username';
 import Profile from './Components/Profile/Profile';
 import Search from "./Components/Search/Search"
 import { SocketManager } from './Utils/SocketListner';
-import { ServerConnected_G, Received_Request_Data_G, IsLogedIn_G, UserName_G, Messages_G, JoinedRoomId_G } from './Utils/Store';
+import { ServerConnected_G, Received_Request_Data_G, IsLogedIn_G, UserName_G, Messages_G, JoinedRoomId_G, Rooms_G } from './Utils/Store';
 import { useNavigate } from "react-router";
 import { checkIfLogedin } from "./Utils/Handlers";
 import FunArea from "./Components/Funarea/Funarea";
 import SavedRooms from "./Components/Savedrooms/Savedrooms";
 import ChatInfo from "./Components/ChatInfo/ChatInfo";
 import Participents from "./Components/Participents/Participents";
-import { AcceptRequest_S, sendMessage_S } from "./Utils/SocketServices";
+import { AcceptRequest_S, leaveRoom_S, sendMessage_S } from "./Utils/SocketServices";
+import ChatSettings from "./Components/ChatSettings/ChatSettings";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -23,6 +24,7 @@ export default function Home() {
     const setUserName = UserName_G((state) => state.setUserName);
     const userName = UserName_G((state) => state.userName);
     const { joinedRoomId, setjoinedRoomId } = JoinedRoomId_G((state) => state);
+    const rooms = Rooms_G((state) => state.rooms);
     const [input, setInput] = useState('');
 
     const messagesEndRef = useRef(null);
@@ -56,16 +58,14 @@ export default function Home() {
 
     async function acceptRequest() {
         AcceptRequest_S(roomId_G, userName);
+        if (joinedRoomId != '') {
+            const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
+            if (!allowSaveChat) {
+                clearMessages(joinedRoomId);
+            }
+        }
         setRequestId('', '');
     }
-
-
-    // function handleJoinChat(id) {
-    //     socket.emit("join", { chatId: id, userId: myId });
-    //     setJoined(true);
-    //     setconnectedChat(id);
-    //     setreceivedRequest({ id: '', received: false });
-    // }
 
     const sendMessage = () => {
         const text = input.trim();
@@ -77,11 +77,9 @@ export default function Home() {
                 senderId: userName,
                 timestamp: Date.now(),
             }
-            // addMessage(joinedRoomId, msgData)
             sendMessage_S({ roomId: joinedRoomId, msg: text, sender: userName, timestamp: Date.now() });
         }
         setInput('');
-        // console.log('message data', joinedRoomId, msgData);
     };
 
     const handleKeyDown = (e) => {
@@ -90,6 +88,21 @@ export default function Home() {
             sendMessage();
         }
     };
+
+    function handleClearRoom() {
+        clearMessages(joinedRoomId);
+    }
+
+    function handleLeaveRoom() {
+        leaveRoom_S(joinedRoomId);
+        if (joinedRoomId != '') {
+            const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
+            if (!allowSaveChat) {
+                clearMessages(joinedRoomId);
+            }
+        }
+        setjoinedRoomId('');
+    }
 
 
     return (
@@ -148,17 +161,29 @@ export default function Home() {
                                         <div className='chatInfo-div'>
                                             <ChatInfo />
                                             <div className='spacer'></div>
-                                            <div className='scroll-area'>
-                                                <Search />
-                                                <div className='spacer'></div>
+                                            <div className='scroll-area-chat-info'>
+                                                {rooms[joinedRoomId].roomData.adminId == userName ?
+                                                    <>
+                                                        <ChatSettings />
+                                                        <div className='spacer'></div>
+                                                    </>
+                                                    : <div></div>}
+                                                {rooms[joinedRoomId].roomData.allowAddPeople ? <>
+                                                    <Search />
+                                                    <div className='spacer'></div>
+                                                </> : <></>}
                                                 <Participents />
                                                 <div className='spacer'></div>
+                                            </div>
+                                            <div className="btns-div">
+                                                <div className="clear_room_btn" onClick={handleClearRoom}>Clear</div>
+                                                <div className="leave_room_btn" onClick={handleLeaveRoom}>Leave</div>
                                             </div>
                                         </div>
                                         : <div></div>
                                 }
                                 <div className='messages'>
-                                    {[...(messages[joinedRoomId] || [])].reverse().map((m, index) => {
+                                    {[...(messages[joinedRoomId] || [])].map((m, index) => {
                                         const time = new Date(m.timestamp).toLocaleTimeString([], {
                                             hour: "2-digit",
                                             minute: "2-digit",
@@ -169,7 +194,7 @@ export default function Home() {
                                                 key={index}
                                                 className={`message ${m.senderId == userName ? 'message-sent' : 'message-received'}`}>
                                                 <div className='message-info-div'>
-                                                    {m.senderId} : {time}
+                                                    {rooms[joinedRoomId].roomData.showSenderId ? <>{m.senderId} : </> : ''}{time}
                                                 </div>
                                                 <div>
                                                     {m.text}

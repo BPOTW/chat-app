@@ -20,7 +20,6 @@ export default function Participents() {
             <div className={`participents-div ${collapseParticipants ? 'collapse-participants' : 'show-participants'}`}>
                 {
                     (participants[joinedRoomId] || []).map((p, index) => {
-                        // console.log(p);
                         return (
                         <div key={index} className='participent-div textBox-div'>
                             <p>{p}</p>
