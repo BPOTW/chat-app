@@ -1,9 +1,9 @@
 import { io } from "socket.io-client";
 
-const SOCKET_URL = "http://localhost:5050";
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5050";
 
 export const socket = io(SOCKET_URL, {
-  autoConnect: false,
+  autoConnect: import.meta.env.VITE_SOCKET_AUTO_CONNECT === 'true',
 });
 
 export function searchForId(id) {

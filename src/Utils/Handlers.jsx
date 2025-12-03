@@ -1,9 +1,10 @@
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5050";
 
 const Login_handler = async (username, password) => {
   try {
-    const res = await axios.post("http://localhost:5050/login", {
+    const res = await axios.post(`${API_BASE_URL}/login`, {
       username: username,
       password: password
     });
@@ -17,7 +18,7 @@ const Login_handler = async (username, password) => {
 
 const SignUp_handler = async (username, password) => {
   try {
-    const res = await axios.post("http://localhost:5050/signup", {
+    const res = await axios.post(`${API_BASE_URL}/signup`, {
       username: username,
       password: password,
       sessionid:''
@@ -31,7 +32,7 @@ const SignUp_handler = async (username, password) => {
 
 const SaveSessionid_handler = async (sessionid) => {
   try {
-    const res = await axios.post("http://localhost:5050/id", {
+    const res = await axios.post(`${API_BASE_URL}/id`, {
       sessionid:sessionid
     });
   } catch (err) {

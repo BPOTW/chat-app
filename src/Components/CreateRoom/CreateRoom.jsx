@@ -5,6 +5,8 @@ import { ActionBtns_G, JoinedRoomId_G, Messages_G, Rooms_G, UserName_G } from ".
 import { CreateRoom_S } from "../../Utils/SocketServices";
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5050";
+
 export default function CreateRoom() {
     const navigate = useNavigate();
     const [roomname, setroomname] = useState('');
@@ -19,7 +21,7 @@ export default function CreateRoom() {
     const { messages, addMessage, setMessages, clearMessages } = Messages_G((state) => state);
 
     function handleRoomName(e) {
-        setroomname(e.target.value);
+        setroomname(e.target.value);              
     }
     function handlePrivate_chk() {
         setprivate_(!private_);
@@ -36,7 +38,7 @@ export default function CreateRoom() {
 
     async function handleCreateRoom() {
         if (roomname != '') {
-            const res = await axios.post("http://localhost:5050/check-room", {
+            const res = await axios.post(`${API_BASE_URL}/check-room`, {
                 roomname
             });
             console.log(res.data);
