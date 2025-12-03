@@ -225,3 +225,5 @@ export default function Home() {
         </>
     )
 }
+
+//add code to check if a room already exists during creating a room

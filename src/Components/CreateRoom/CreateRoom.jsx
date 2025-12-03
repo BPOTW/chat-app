@@ -3,14 +3,15 @@ import "./CreateRoom.css"
 import { useNavigate } from "react-router";
 import { ActionBtns_G, JoinedRoomId_G, Messages_G, Rooms_G, UserName_G } from "../../Utils/Store";
 import { CreateRoom_S } from "../../Utils/SocketServices";
+import axios from "axios";
 
 export default function CreateRoom() {
     const navigate = useNavigate();
     const [roomname, setroomname] = useState('');
-    const [private_, setprivate_] = useState(true);
-    const [sender, setsender] = useState(false);
-    const [savechat, setsavechat] = useState(false);
-    const [allowadd, setallowadd] = useState(false);
+    const [private_, setprivate_] = useState(false);
+    const [sender, setsender] = useState(true);
+    const [savechat, setsavechat] = useState(true);
+    const [allowadd, setallowadd] = useState(true);
     const userName = UserName_G((state) => state.userName);
     const toggleCreateRoom = ActionBtns_G((state) => state.toggleCreateRoom);
     const rooms = Rooms_G((state) => state.rooms);
@@ -35,6 +36,14 @@ export default function CreateRoom() {
 
     async function handleCreateRoom() {
         if (roomname != '') {
+            const res = await axios.post("http://localhost:5050/check-room", {
+                roomname
+            });
+            console.log(res.data);
+            if (res.data.exists) {
+                alert("Room already exists! Use a different name");
+                return;
+            }
             if (joinedRoomId != '') {
                 const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
                 if (!allowSaveChat) {
