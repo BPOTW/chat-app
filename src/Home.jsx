@@ -13,7 +13,6 @@ import ChatInfo from "./Components/ChatInfo/ChatInfo";
 import Participents from "./Components/Participents/Participents";
 import { AcceptRequest_S, leaveRoom_S, sendMessage_S } from "./Utils/SocketServices";
 import ChatSettings from "./Components/ChatSettings/ChatSettings";
-import { Analytics } from "@vercel/analytics/next"
 
 export default function Home() {
     const navigate = useNavigate();
@@ -107,7 +106,6 @@ export default function Home() {
 
     return (
         <>
-            <Analytics/>
             {
                 islogedin ? <>
                     <SocketManager />
@@ -228,4 +226,3 @@ export default function Home() {
         </>
     )
 }
-
