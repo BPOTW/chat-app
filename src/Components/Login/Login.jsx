@@ -8,6 +8,8 @@ export default function Login() {
     const navigate = useNavigate();
     const [username, setusername] = useState('');
     const [key, setkey] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [snackbar, setSnackbar] = useState({ show: false, message: '' });
     const setUserName = UserName_G((state) => state.setUserName);
     const setislogedin = IsLogedIn_G((state) => state.setislogedin);
 
@@ -20,15 +22,27 @@ export default function Login() {
 
     async function handleLogin() {
         if (username != '' && key != '') {
-            const res = await Login_handler(username, key);
-            if (res.login) {
-                setUserName(res.userData.username);
-                localStorage.setItem("login_data", JSON.stringify({
-                    'login': true,
-                    'username': res.userData.username,
-                }));
-                setislogedin(true);
-                navigate('/chat');
+            try {
+                setLoading(true);
+                const res = await Login_handler(username, key);
+                if (res && res.login) {
+                    setUserName(res.userData.username);
+                    localStorage.setItem("login_data", JSON.stringify({
+                        'login': true,
+                        'username': res.userData.username,
+                    }));
+                    setislogedin(true);
+                    navigate('/chat');
+                } else {
+                    const msg = (res && res.message) || 'Login failed. Please check credentials.';
+                    setSnackbar({ show: true, message: msg });
+                    setTimeout(() => setSnackbar({ show: false, message: '' }), 4000);
+                }
+            } catch (err) {
+                setSnackbar({ show: true, message: 'Login failed. Try again.' });
+                setTimeout(() => setSnackbar({ show: false, message: '' }), 4000);
+            } finally {
+                setLoading(false);
             }
         }
     }
@@ -56,20 +70,27 @@ export default function Login() {
                 <div className="lables-inputs-div">
                     <div className="input-div username-div">
                         <label htmlFor="username" className="lable username-lable">UserName</label>
-                        <input type="text" name="username" onChange={handleUsername} value={username} placeholder="Enter Username" className="input username-input" />
+                        <input type="text" name="username" onChange={handleUsername} value={username} placeholder="Enter Username" className="input username-input" disabled={loading} />
                     </div>
                     <div className="input-div key-div">
                         <label htmlFor="key" className="lable key-lable">Key</label>
-                        <input type="text" name="key" onChange={handleKey} value={key} placeholder="Enter Key" className="input key-input" />
+                        <input type="text" name="key" onChange={handleKey} value={key} placeholder="Enter Key" className="input key-input" disabled={loading} />
                     </div>
 
-                    <div onClick={() => handleLogin()} className={`login-btn ${username != '' && key != '' ? 'login-btn-active' : ''}`}>
-                        <p>Login</p>
+                    <div onClick={() => !loading && handleLogin()} className={`login-btn ${username != '' && key != '' ? 'login-btn-active' : ''} ${loading ? 'loading' : ''}`} aria-busy={loading}>
+                        {loading ? (
+                            <div className="spinner" aria-hidden="true"></div>
+                        ) : (
+                            <p>Login</p>
+                        )}
                     </div>
                     <div className="signup-redirect-div">
                         <p>Don't have an account <a href="/signup">Signup</a></p>
                     </div>
                 </div>
+            </div>
+            <div className={`snackbar ${snackbar.show ? 'show' : ''}`} role="status">
+                {snackbar.message}
             </div>
         </>
     )
