@@ -37,7 +37,6 @@ export default function Home() {
             if (data.login) {
                 setislogedin(true);
                 setUserName(data.username);
-                navigate("/chat");
             } else {
                 setislogedin(false);
                 setUserName('');
