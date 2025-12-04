@@ -17,17 +17,8 @@ export function SocketManager() {
     const {Private, Invite, SaveChat, togglePrivate, toggleInvite, toggleSave} = ProfileBtns_G();
 
     useEffect(() => {
-        // mark as attempting to connect
         setIsConnecting(true);
 
-        // avoid calling connect if socket is already connecting/connected
-        try {
-            console.debug('Socket current state:', { connected: socket.connected, disconnected: socket.disconnected });
-        } catch (e) {
-            // ignore
-        }
-
-        // attach auth info so server can accept the handshake if needed
         if (userName) {
             socket.auth = { userName };
         }
@@ -35,10 +26,8 @@ export function SocketManager() {
         if (socket && socket.disconnected) {
             socket.connect();
         } else if (socket && socket.connected) {
-            // already connected
             setIsConnecting(false);
             setIsConnected(true);
-            // ensure server knows current user state
             registerUser(userName,{private:Private,invite:Invite,savechat:SaveChat});
         }
 
