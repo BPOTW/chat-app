@@ -19,7 +19,28 @@ export function SocketManager() {
     useEffect(() => {
         // mark as attempting to connect
         setIsConnecting(true);
-        socket.connect();
+
+        // avoid calling connect if socket is already connecting/connected
+        try {
+            console.debug('Socket current state:', { connected: socket.connected, disconnected: socket.disconnected });
+        } catch (e) {
+            // ignore
+        }
+
+        // attach auth info so server can accept the handshake if needed
+        if (userName) {
+            socket.auth = { userName };
+        }
+
+        if (socket && socket.disconnected) {
+            socket.connect();
+        } else if (socket && socket.connected) {
+            // already connected
+            setIsConnecting(false);
+            setIsConnected(true);
+            // ensure server knows current user state
+            registerUser(userName,{private:Private,invite:Invite,savechat:SaveChat});
+        }
 
         socket.on('connect', () => {
             console.log('Connected to server.');
@@ -34,7 +55,6 @@ export function SocketManager() {
             setIsConnected(false);
         });
 
-        // optional: when attempting reconnects indicate connecting
         socket.on('reconnect_attempt', () => {
             setIsConnecting(true);
         });
