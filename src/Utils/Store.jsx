@@ -43,8 +43,12 @@ export const Received_Request_Data_G = create((set) => ({
 
 export const ServerConnected_G = create((set) => ({
   isConnected: false,
+  isConnecting: false,
   setIsConnected: (value) => {
     set(() => ({ isConnected: value }))
+  },
+  setIsConnecting: (value) => {
+    set(() => ({ isConnecting: value }))
   }
 }));
 

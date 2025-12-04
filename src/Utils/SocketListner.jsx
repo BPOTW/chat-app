@@ -4,6 +4,7 @@ import { ServerConnected_G, SearchId_result_G, Received_Request_Data_G, UserName
 
 export function SocketManager() {
     const setIsConnected = ServerConnected_G((state) => state.setIsConnected);
+    const setIsConnecting = ServerConnected_G((state) => state.setIsConnecting);
     const setAvailable = SearchId_result_G((state) => state.setAvailable);
     const setId = SearchId_result_G((state) => state.setId);
     const setRequestId = Received_Request_Data_G((state) => state.setRequestId);
@@ -16,16 +17,31 @@ export function SocketManager() {
     const {Private, Invite, SaveChat, togglePrivate, toggleInvite, toggleSave} = ProfileBtns_G();
 
     useEffect(() => {
+        // mark as attempting to connect
+        setIsConnecting(true);
         socket.connect();
 
         socket.on('connect', () => {
             console.log('Connected to server.');
+            setIsConnecting(false);
             setIsConnected(true);
             registerUser(userName,{private:Private,invite:Invite,savechat:SaveChat});
         });
 
+        socket.on('connect_error', (err) => {
+            console.warn('Socket connect error:', err);
+            setIsConnecting(false);
+            setIsConnected(false);
+        });
+
+        // optional: when attempting reconnects indicate connecting
+        socket.on('reconnect_attempt', () => {
+            setIsConnecting(true);
+        });
+
         socket.on("disconnect", () => {
             setIsConnected(false);
+            setIsConnecting(false);
         });
 
         socket.on('checkIdResult', (data) => {
@@ -80,6 +96,8 @@ export function SocketManager() {
             socket.off('request');
             socket.off('message');
             socket.off('roomCreated');
+            socket.off('connect_error');
+            socket.off('reconnect_attempt');
             socket.disconnect();
         };
     }, [setId, setAvailable]);

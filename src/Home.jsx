@@ -18,6 +18,7 @@ export default function Home() {
     const navigate = useNavigate();
 
     const isConnected = ServerConnected_G((state) => state.isConnected);
+    const isConnecting = ServerConnected_G((state) => state.isConnecting);
     const { islogedin, setislogedin } = IsLogedIn_G((state) => state);
     const { requestId_G, roomId_G, setRequestId } = Received_Request_Data_G((state) => state);
     const { messages, addMessage, setMessages, clearMessages } = Messages_G((state) => state);
@@ -112,9 +113,11 @@ export default function Home() {
                 islogedin ? <>
                     <SocketManager />
                     {
-                        isConnected ?
-                            <div className='connected'>Connected</div> :
-                            <div className='disconnected'>Disconnected</div>
+                        isConnecting ?
+                            <div className='connecting'>Connecting...</div> :
+                            (isConnected ?
+                                <div className='connected'>Connected</div> :
+                                <div className='disconnected'>Disconnected</div>)
                     }
 
                     {
