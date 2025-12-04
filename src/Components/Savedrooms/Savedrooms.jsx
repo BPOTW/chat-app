@@ -22,7 +22,7 @@ export default function SavedRooms() {
     function deleteSavedRoom(e, id) {
         e.stopPropagation();
         delRoom(id);
-        const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
+        const allowSaveChat = rooms[joinedRoomId].allowSaveChat;
         if (!allowSaveChat) {
             clearMessages(joinedRoomId);
         }
@@ -31,7 +31,7 @@ export default function SavedRooms() {
 
     function joinRoom(id) {
         if (id != joinedRoomId) {
-            if(joinedRoomId != ''){const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
+            if(joinedRoomId != ''){const allowSaveChat = rooms[joinedRoomId].allowSaveChat;
             if (!allowSaveChat) {
                 clearMessages(joinedRoomId);
             }}
@@ -47,7 +47,7 @@ export default function SavedRooms() {
             </div>
             <div className={`savedRooms-div ${collapseSavedRooms ? 'collapse-savedrooms' : 'show-savedrooms'}`}>
 
-                {Object.entries(rooms).map(([roomName, roomArray], index) => {
+                {Object.entries(rooms).map(([roomName], index) => {
                     return (
                         <div key={index} className='savedRoom-div textBox-div' onClick={() => joinRoom(roomName)}>
                             {roomName}

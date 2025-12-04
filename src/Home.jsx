@@ -47,7 +47,6 @@ export default function Home() {
             setUserName('');
             navigate("/login");
         }
-
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
@@ -59,7 +58,7 @@ export default function Home() {
     async function acceptRequest() {
         AcceptRequest_S(roomId_G, userName);
         if (joinedRoomId != '') {
-            const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
+            const allowSaveChat = rooms[joinedRoomId].allowSaveChat;
             if (!allowSaveChat) {
                 clearMessages(joinedRoomId);
             }
@@ -96,7 +95,7 @@ export default function Home() {
     function handleLeaveRoom() {
         leaveRoom_S(joinedRoomId);
         if (joinedRoomId != '') {
-            const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
+            const allowSaveChat = rooms[joinedRoomId].allowSaveChat;
             if (!allowSaveChat) {
                 clearMessages(joinedRoomId);
             }
@@ -164,13 +163,14 @@ export default function Home() {
                                             <ChatInfo />
                                             <div className='spacer'></div>
                                             <div className='scroll-area-chat-info'>
-                                                {rooms[joinedRoomId].roomData.adminId == userName ?
-                                                    <>
-                                                        <ChatSettings />
-                                                        <div className='spacer'></div>
-                                                    </>
-                                                    : <div></div>}
-                                                {rooms[joinedRoomId].roomData.allowAddPeople ? <>
+                                                {
+                                                rooms[joinedRoomId].adminId == userName ?
+                                                <>
+                                                    <ChatSettings />
+                                                    <div className='spacer'></div>
+                                                </>
+                                                : <div></div>}
+                                                {rooms[joinedRoomId].allowAddPeople ? <>
                                                     <Search />
                                                     <div className='spacer'></div>
                                                 </> : <></>}
@@ -196,7 +196,7 @@ export default function Home() {
                                                 key={index}
                                                 className={`message ${m.senderId == userName ? 'message-sent' : 'message-received'}`}>
                                                 <div className='message-info-div'>
-                                                    {rooms[joinedRoomId].roomData.showSenderId ? <>{m.senderId} : </> : ''}{time}
+                                                    {rooms[joinedRoomId].showSenderId ? <>{m.senderId} : </> : ''}{time}
                                                 </div>
                                                 <div>
                                                     {m.text}

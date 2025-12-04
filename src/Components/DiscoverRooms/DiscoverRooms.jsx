@@ -18,7 +18,7 @@ export default function DiscoverRoom() {
     function handleJoinRoom(id) {
         if (id != joinedRoomId) {
             if (joinedRoomId != '') {
-                const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
+                const allowSaveChat = rooms[joinedRoomId].allowSaveChat;
                 if (!allowSaveChat) {
                     clearMessages(joinedRoomId);
                 }

@@ -23,30 +23,30 @@ export default function ChatSettings() {
     function handlePrivate() {
         setPrivate(!private_);
         roomData_T = rooms[joinedRoomId];
-        roomData_T.roomData.isPrivate = !private_;
-        updateRoom(joinedRoomId, roomData_T);
-        updateRoomData_S(joinedRoomId, roomData_T.roomData);
+        roomData_T.isPrivate = !private_;
+        // updateRoom(joinedRoomId, roomData_T);
+        updateRoomData_S(joinedRoomId, roomData_T);
     }
     function handleShowSenderId() {
         setSenderId(!showSenderId_);
         roomData_T = rooms[joinedRoomId];
-        roomData_T.roomData.showSenderId = !showSenderId_;
-        updateRoom(joinedRoomId, roomData_T);
-        updateRoomData_S(joinedRoomId, roomData_T.roomData);
+        roomData_T.showSenderId = !showSenderId_;
+        // updateRoom(joinedRoomId, roomData_T);
+        updateRoomData_S(joinedRoomId, roomData_T);
     }
     function handleSaveChat() {
         setSaveChat(!saveChat_);
         roomData_T = rooms[joinedRoomId];
-        roomData_T.roomData.allowSaveChat = !saveChat_;
-        updateRoom(joinedRoomId, roomData_T);
-        updateRoomData_S(joinedRoomId, roomData_T.roomData);
+        roomData_T.allowSaveChat = !saveChat_;
+        // updateRoom(joinedRoomId, roomData_T);
+        updateRoomData_S(joinedRoomId, roomData_T);
     }
     function handleAllowAddPeople() {
         setallowAddPeople(!allowAddPeople_);
         roomData_T = rooms[joinedRoomId];
-        roomData_T.roomData.allowAddPeople = !allowAddPeople_;
-        updateRoom(joinedRoomId, roomData_T);
-        updateRoomData_S(joinedRoomId, roomData_T.roomData);
+        roomData_T.allowAddPeople = !allowAddPeople_;
+        // updateRoom(joinedRoomId, roomData_T);
+        updateRoomData_S(joinedRoomId, roomData_T);
     }
 
     function Collapse() {
@@ -54,7 +54,7 @@ export default function ChatSettings() {
     }
 
     useEffect(() => {
-        const roomData = rooms[joinedRoomId].roomData;
+        const roomData = rooms[joinedRoomId];
         setPrivate(roomData.isPrivate);
         setallowAddPeople(roomData.allowAddPeople);
         setSaveChat(roomData.allowSaveChat);

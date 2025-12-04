@@ -41,13 +41,12 @@ export default function CreateRoom() {
             const res = await axios.post(`${API_BASE_URL}/check-room`, {
                 roomname
             });
-            console.log(res.data);
             if (res.data.exists) {
                 alert("Room already exists! Use a different name");
                 return;
             }
             if (joinedRoomId != '') {
-                const allowSaveChat = rooms[joinedRoomId].roomData.allowSaveChat;
+                const allowSaveChat = rooms[joinedRoomId].allowSaveChat;
                 if (!allowSaveChat) {
                     clearMessages(joinedRoomId);
                 }
