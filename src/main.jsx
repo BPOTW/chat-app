@@ -9,11 +9,11 @@ import Login from './Components/Login/Login.jsx';
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App/>} />
-          <Route path="/chat" element={<Home/>} />
-          <Route path="/signup" element={<SignUp/>} />
-          <Route path="/login" element={<Login/>} />
-        </Routes>
-      </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App/>} />
+      <Route path="/chat" element={<Home/>} />
+      <Route path="/signup" element={<SignUp/>} />
+      <Route path="/login" element={<Login/>} />
+    </Routes>
+  </BrowserRouter>
 )
