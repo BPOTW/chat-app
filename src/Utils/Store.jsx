@@ -185,18 +185,14 @@ export const Rooms_G = create(
           },
         })),
     }),
-
-    // {
-    //   name: "rooms-store",
-    // }
   )
 );
 
 export const DiscoverRoomsList_G = create((set) => ({
-  listOfRooms: [],  // now an array
+  listOfRooms: [], 
 
   updateDiscoverRoomsList: (value) =>
     set(() => ({
-      listOfRooms: value,  // value should now be an array
+      listOfRooms: value, 
     })),
 }));
